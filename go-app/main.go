@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
@@ -50,10 +49,23 @@ func AllCourses() ([]Course, error) {
 
 func getAllCourses(w http.ResponseWriter, r *http.Request) {
 	courses, err := AllCourses()
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
 	if err != nil {
-		fmt.Fprintf(w, "Error while obtaining courses")
+		fmt.Fprintf(w, "<h3>Error while obtaining courses</h3>")
 	}
-	json.NewEncoder(w).Encode(courses)
+
+	html := `<h2>Cursos</h2>
+						<br/>
+           <ul>`
+
+	for _, course := range courses {
+		html += fmt.Sprintf("<li>%d - %s</li>", course.Id, course.Title)
+	}
+
+	html += "</ul>"
+
+	fmt.Fprintf(w, html)
 }
 
 func handleRequests() {

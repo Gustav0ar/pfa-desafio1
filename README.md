@@ -1,13 +1,9 @@
 # Para rodar, siga os seguintes passos
 
-**1. Clone este repositório ou copie o nginx.conf para a pasta atual**
+**1. `docker network create pfa-desafio1`**
 
-**2. Estou fazendo desta maneira para mesclar estilos de rodar**
+**2. `docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=fullcycle -p 3306 --network pfa-desafio1 -d mysql:5.7`**
 
-**3. `docker network create pfa-desafio1`**
+**3. `docker run --name desafio1 -e MYSQL_HOST=mysql -e MYSQL_PORT=3306 -p 3000 --network pfa-desafio1 -d gustavoar/pfa-desafio1:1.0`**
 
-**4. `docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=fullcycle -p 3306 --network pfa-desafio1 -d mysql:5.7`**
-
-**5. `docker run --name desafio1 -e MYSQL_HOST=mysql -e MYSQL_PORT=3306 -p 3000 --network pfa-desafio1 -d gustavoar/pfa-desafio1:1.0`**
-
-**6. `docker run --name mynginx1 -p 8080:80 -v $(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro --network pfa-desafio1 -d nginx`**
+**5. `docker run --name nginx -p 8080:80 --network pfa-desafio1 -d gustavoar/pfa-nginx:1.0`**
